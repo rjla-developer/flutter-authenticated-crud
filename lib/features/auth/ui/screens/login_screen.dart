@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:teslo_shop/core/ui/shared/shared.dart';
+import 'package:teslo_shop/features/auth/presenter/bloc/login_form_bloc.dart';
+import 'package:formz/formz.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -52,44 +55,58 @@ class _LoginForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final textStyles = Theme.of(context).textTheme;
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 50),
-      child: Column(
-        children: [
-          const SizedBox(height: 50),
-          Text('Login', style: textStyles.titleLarge),
-          const SizedBox(height: 90),
-          const CustomTextFormField(
-            label: 'Correo',
-            keyboardType: TextInputType.emailAddress,
-          ),
-          const SizedBox(height: 30),
-          const CustomTextFormField(
-            label: 'Contraseña',
-            obscureText: true,
-          ),
-          const SizedBox(height: 30),
-          SizedBox(
-              width: double.infinity,
-              height: 60,
-              child: CustomFilledButton(
-                text: 'Ingresar',
-                buttonColor: Colors.black,
-                onPressed: () {},
-              )),
-          const Spacer(flex: 2),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return BlocBuilder<LoginFormBloc, LoginFormState>(
+      builder: (context, state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 50),
+          child: Column(
             children: [
-              const Text('¿No tienes cuenta?'),
-              TextButton(
-                  onPressed: () => context.push('/register'),
-                  child: const Text('Crea una aquí'))
+              const SizedBox(height: 50),
+              Text('Login', style: textStyles.titleLarge),
+              const SizedBox(height: 90),
+              CustomTextFormField(
+                label: 'Correo',
+                keyboardType: TextInputType.emailAddress,
+                onChanged: (value) =>
+                    context.read<LoginFormBloc>().add(EmailChanged(value)),
+                errorMessage: state.email.errorMessage,
+              ),
+              const SizedBox(height: 30),
+              CustomTextFormField(
+                label: 'Contraseña',
+                obscureText: true,
+                onChanged: (value) =>
+                    context.read<LoginFormBloc>().add(PasswordChanged(value)),
+                errorMessage: state.password.errorMessage,
+              ),
+              const SizedBox(height: 30),
+              SizedBox(
+                  width: double.infinity,
+                  height: 60,
+                  child: CustomFilledButton(
+                    text: 'Ingresar',
+                    buttonColor: Colors.black,
+                    onPressed: state.isPosting
+                        ? null
+                        : () {
+                            context.read<LoginFormBloc>().add(FormSubmitted());
+                          },
+                  )),
+              const Spacer(flex: 2),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text('¿No tienes cuenta?'),
+                  TextButton(
+                      onPressed: () => context.push('/register'),
+                      child: const Text('Crea una aquí'))
+                ],
+              ),
+              const Spacer(flex: 1),
             ],
           ),
-          const Spacer(flex: 1),
-        ],
-      ),
+        );
+      },
     );
   }
 }

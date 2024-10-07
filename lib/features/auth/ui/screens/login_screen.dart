@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:teslo_shop/core/ui/shared/shared.dart';
 import 'package:teslo_shop/features/auth/presenter/bloc/login_form_bloc.dart';
-import 'package:formz/formz.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -86,11 +85,11 @@ class _LoginForm extends StatelessWidget {
                   child: CustomFilledButton(
                     text: 'Ingresar',
                     buttonColor: Colors.black,
-                    onPressed: state.isPosting
-                        ? null
-                        : () {
+                    onPressed: state.email.isValid && state.password.isValid
+                        ? () {
                             context.read<LoginFormBloc>().add(FormSubmitted());
-                          },
+                          }
+                        : null,
                   )),
               const Spacer(flex: 2),
               Row(

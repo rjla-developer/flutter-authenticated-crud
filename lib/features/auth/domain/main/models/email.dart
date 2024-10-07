@@ -1,7 +1,7 @@
 import 'package:formz/formz.dart';
 
 // Define input validation errors
-enum EmailError { empty, format }
+enum EmailError { empty }
 
 // Extend FormzInput and provide the input type and error type.
 class Email extends FormzInput<String, EmailError> {
@@ -19,8 +19,6 @@ class Email extends FormzInput<String, EmailError> {
     if (isValid || isPure) return null;
 
     if (displayError == EmailError.empty) return 'El campo es requerido';
-    if (displayError == EmailError.format)
-      return 'No tiene formato de correo electrónico';
 
     return null;
   }
@@ -29,7 +27,6 @@ class Email extends FormzInput<String, EmailError> {
   @override
   EmailError? validator(String value) {
     if (value.isEmpty || value.trim().isEmpty) return EmailError.empty;
-    if (!emailRegExp.hasMatch(value)) return EmailError.format;
 
     return null;
   }

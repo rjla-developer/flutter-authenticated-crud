@@ -1,4 +1,3 @@
-export 'presentation/screens/screens.dart';
+export 'ui/screens/screens.dart';
 
-
-export 'presentation/widgets/widgets.dart';
+export 'ui/widgets/widgets.dart';

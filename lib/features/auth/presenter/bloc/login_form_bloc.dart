@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:teslo_shop/features/auth/domain/main/models/email.dart';
-import 'package:teslo_shop/features/auth/domain/main/models/password.dart';
+import 'package:teslo_shop/features/auth/domain/main/models/user_model.dart';
+import 'package:teslo_shop/features/auth/domain/main/models/password_model.dart';
 
 part 'login_form_event.dart';
 part 'login_form_state.dart';
@@ -11,21 +11,21 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   final Function(String, String) loginUserCallback;
 
   LoginFormBloc({required this.loginUserCallback}) : super(LoginFormState()) {
-    on<EmailChanged>(_onEmailChanged);
+    on<UserModelChanged>(_onEmailChanged);
     on<PasswordChanged>(_onPasswordChanged);
     on<FormSubmitted>(_onFormSubmit);
   }
 
-  void _onEmailChanged(EmailChanged event, Emitter<LoginFormState> emit) {
-    final newEmail = Email.dirty(event.email);
+  void _onEmailChanged(UserModelChanged event, Emitter<LoginFormState> emit) {
+    final newUser = UserModel.dirty(event.email);
     emit(state.copyWith(
-      email: newEmail,
-      isValid: Formz.validate([newEmail, state.password]),
+      email: newUser,
+      isValid: Formz.validate([newUser, state.password]),
     ));
   }
 
   void _onPasswordChanged(PasswordChanged event, Emitter<LoginFormState> emit) {
-    final newPassword = Password.dirty(event.password);
+    final newPassword = PasswordModel.dirty(event.password);
     emit(state.copyWith(
       password: newPassword,
       isValid: Formz.validate([newPassword, state.email]),
@@ -38,8 +38,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
 
     if (!state.isValid) return;
 
-    /* print(state); */
-    print("heeeeeey");
+    print(state);
 
     /* emit(state.copyWith(isPosting: true));
 
@@ -49,8 +48,8 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   }
 
   void _touchEveryField(Emitter<LoginFormState> emit) {
-    final email = Email.dirty(state.email.value);
-    final password = Password.dirty(state.password.value);
+    final email = UserModel.dirty(state.email.value);
+    final password = PasswordModel.dirty(state.password.value);
 
     // Validar ambos campos
     final isValid = Formz.validate([email, password]);

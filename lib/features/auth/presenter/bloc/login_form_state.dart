@@ -4,23 +4,23 @@ class LoginFormState extends Equatable {
   final bool isPosting;
   final bool isFormPosted;
   final bool isValid;
-  final Email email;
-  final Password password;
+  final UserModel email;
+  final PasswordModel password;
 
   const LoginFormState({
     this.isPosting = false,
     this.isFormPosted = false,
     this.isValid = false,
-    this.email = const Email.pure(),
-    this.password = const Password.pure(),
+    this.email = const UserModel.pure(),
+    this.password = const PasswordModel.pure(),
   });
 
   LoginFormState copyWith({
     bool? isPosting,
     bool? isFormPosted,
     bool? isValid,
-    Email? email,
-    Password? password,
+    UserModel? email,
+    PasswordModel? password,
   }) {
     return LoginFormState(
       isPosting: isPosting ?? this.isPosting,

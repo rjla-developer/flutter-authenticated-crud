@@ -67,7 +67,7 @@ class _LoginForm extends StatelessWidget {
                 label: 'Correo',
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) =>
-                    context.read<LoginFormBloc>().add(EmailChanged(value)),
+                    context.read<LoginFormBloc>().add(UserModelChanged(value)),
                 errorMessage: state.email.errorMessage,
               ),
               const SizedBox(height: 30),

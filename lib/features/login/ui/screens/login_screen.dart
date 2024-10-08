@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:teslo_shop/core/ui/shared/shared.dart';
-import 'package:teslo_shop/features/auth/presenter/bloc/login_form_bloc.dart';
+import 'package:teslo_shop/features/login/presenter/bloc/login_form_bloc.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});

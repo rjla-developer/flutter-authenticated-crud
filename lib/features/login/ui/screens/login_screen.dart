@@ -68,7 +68,7 @@ class _LoginForm extends StatelessWidget {
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) =>
                     context.read<LoginFormBloc>().add(UserModelChanged(value)),
-                errorMessage: state.email.errorMessage,
+                errorMessage: state.user.errorMessage,
               ),
               const SizedBox(height: 30),
               CustomTextFormField(
@@ -85,7 +85,7 @@ class _LoginForm extends StatelessWidget {
                   child: CustomFilledButton(
                     text: 'Ingresar',
                     buttonColor: Colors.black,
-                    onPressed: state.email.isValid && state.password.isValid
+                    onPressed: state.user.isValid && state.password.isValid
                         ? () {
                             context.read<LoginFormBloc>().add(FormSubmitted());
                           }

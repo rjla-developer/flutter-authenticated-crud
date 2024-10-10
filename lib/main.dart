@@ -4,7 +4,7 @@ import 'package:teslo_shop/config/config.dart';
 import 'package:teslo_shop/config/constants/environment.dart';
 import 'package:teslo_shop/config/router/app_router.dart';
 import 'package:teslo_shop/features/login/data/main/repositories/login_repository_impl.dart';
-import 'package:teslo_shop/features/login/presenter/main/bloc/auth_bloc.dart';
+import 'package:teslo_shop/core/presenter/main/bloc/auth_bloc.dart';
 
 void main() async {
   await Environment.initEnironment();

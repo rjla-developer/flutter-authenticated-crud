@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:teslo_shop/features/login/presenter/models/input_validations_model.dart';
-import 'package:teslo_shop/features/login/presenter/models/password_input_validations_model.dart';
+import 'package:teslo_shop/features/login/presenter/main/models/input_validations_model.dart';
+import 'package:teslo_shop/features/login/presenter/main/models/password_input_validations_model.dart';
 
 part 'login_form_event.dart';
 part 'login_form_state.dart';

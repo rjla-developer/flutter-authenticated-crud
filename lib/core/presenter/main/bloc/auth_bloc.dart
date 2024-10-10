@@ -10,12 +10,12 @@ part 'auth_state.dart';
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginRepository loginRepository;
   AuthBloc({required this.loginRepository}) : super(AuthState()) {
-    on<LoginEvent>(_onLogin);
+    on<AuthLoginEvent>(_onLogin);
     on<LogoutEvent>(_onLogout);
     on<CheckAuthStatusEvent>(_onCheckAuthStatus);
   }
 
-  void _onLogin(LoginEvent event, Emitter<AuthState> emit) async {
+  Future<void> _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
     try {
       final user = await loginRepository.login(event.email, event.password);
       emit(state.copyWith(

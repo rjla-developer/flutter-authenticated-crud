@@ -38,11 +38,9 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
 
     if (!state.isValid) return;
 
-    print(state);
+    await loginUserCallback(state.user.value, state.password.value);
 
     /* emit(state.copyWith(isPosting: true));
-
-    await loginUserCallback(state.email.value, state.password.value);
 
     emit(state.copyWith(isPosting: false)); */
   }

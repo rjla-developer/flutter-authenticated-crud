@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:teslo_shop/config/config.dart';
 import 'package:teslo_shop/config/constants/environment.dart';
 import 'package:teslo_shop/config/router/app_router.dart';
+import 'package:teslo_shop/features/login/data/main/repositories/login_repository_impl.dart';
+import 'package:teslo_shop/features/login/presenter/main/bloc/auth_bloc.dart';
 
 void main() async {
   await Environment.initEnironment();
@@ -14,10 +17,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      routerConfig: appRouter,
-      theme: AppTheme().getTheme(),
-      debugShowCheckedModeBanner: false,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>(
+          create: (context) => AuthBloc(
+            loginRepository: LoginRepositoryImpl(),
+            /* keyValueStorageService: KeyValueStorageServiceImpl(), */
+          ),
+        ),
+      ],
+      child: MaterialApp.router(
+        routerConfig: appRouter,
+        theme: AppTheme().getTheme(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

@@ -4,23 +4,23 @@ import 'package:teslo_shop/features/login/domain/main/models/user_account_model.
 import 'package:teslo_shop/features/login/domain/main/repositories/login_repository.dart';
 
 class LoginRepositoryImpl extends LoginRepository {
-  final LoginDataSource dataSource;
-  LoginRepositoryImpl(LoginDataSource? dataSource)
-      : dataSource = dataSource ?? LoginDataSourceImpl();
+  final LoginDataSource _dataSource;
+  LoginRepositoryImpl({LoginDataSource? dataSource})
+      : _dataSource = dataSource ?? LoginDataSourceImpl();
 
   @override
   Future<UserAccountModel> checkStatus(String token) {
-    return dataSource.checkStatus(token);
+    return _dataSource.checkStatus(token);
   }
 
   @override
   Future<UserAccountModel> login(String email, String password) {
-    return dataSource.login(email, password);
+    return _dataSource.login(email, password);
   }
 
   @override
   Future<UserAccountModel> register(
       String email, String password, String fullName) {
-    return dataSource.register(email, password, fullName);
+    return _dataSource.register(email, password, fullName);
   }
 }

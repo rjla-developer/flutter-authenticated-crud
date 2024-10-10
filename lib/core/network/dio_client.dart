@@ -13,11 +13,6 @@ class DioClient {
     _dio = Dio(
       BaseOptions(
         baseUrl: Environment.apiUrl,
-        connectTimeout: Duration(microseconds: 5000),
-        receiveTimeout: Duration(microseconds: 3000),
-        headers: {
-          'Content-Type': 'application/json',
-        },
       ),
     );
   }

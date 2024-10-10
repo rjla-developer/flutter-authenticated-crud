@@ -14,24 +14,31 @@ class LoginDataSourceImpl extends LoginDataSource {
 
   @override
   Future<UserAccountModel> login(String email, String password) async {
+    //print(' email: $email, password: $password');
     try {
       final response = await DioClient().dio.post("/auth/login", data: {
         "email": email,
         "password": password,
       });
+      // print(response.data);
       final userAccount =
           UserAccountMapper.userAccountJsonToModel(response.data);
       return userAccount;
     } on DioException catch (e) {
+      // print('DioException: ${e.message}');
+      /* if (e.response != null) {
+        print('Response data: ${e.response?.data}');
+        print('Response headers: ${e.response?.headers}');
+        print('Response status code: ${e.response?.statusCode}');
+      } */
       if (e.response?.statusCode == 401) throw WrongCredentialsException();
       if (e.type == DioExceptionType.connectionTimeout) {
         throw ConnectionTimeoutException();
       }
-      throw CustomErrorException(
-          message: "Error al iniciar sesión", errorCode: 1);
+      throw CustomErrorException(message: "Error: $e", errorCode: 1);
     } catch (e) {
       throw CustomErrorException(
-          message: "Error al iniciar sesión", errorCode: 1);
+          message: "Error al iniciar sesión: $e", errorCode: 1);
     }
   }
 

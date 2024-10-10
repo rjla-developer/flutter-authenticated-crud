@@ -25,16 +25,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } on WrongCredentialsException {
       emit(state.copyWith(
         authStatus: AuthStatus.unauthenticated,
+        userAccount: null,
         errorMessage: 'Usuario o contraseña incorrectos',
       ));
     } on ConnectionTimeoutException {
       emit(state.copyWith(
         authStatus: AuthStatus.unauthenticated,
+        userAccount: null,
         errorMessage: 'Error de conexión',
       ));
     } catch (e) {
       emit(state.copyWith(
         authStatus: AuthStatus.unauthenticated,
+        userAccount: null,
         errorMessage: 'Error no controlado $e',
       ));
     }

@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:formz/formz.dart';
-import 'package:teslo_shop/features/login/presenter/main/models/input_validations_model.dart';
-import 'package:teslo_shop/features/login/presenter/main/models/password_input_validations_model.dart';
+import 'package:teslo_shop/features/login/presenter/main/models/input_model.dart';
+import 'package:teslo_shop/features/login/presenter/main/models/password_input_model.dart';
 
 part 'login_form_event.dart';
 part 'login_form_state.dart';
@@ -17,7 +17,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   }
 
   void _onUserChanged(UserModelChanged event, Emitter<LoginFormState> emit) {
-    final newUser = InputValidationsModel.dirty(event.user);
+    final newUser = InputModel.dirty(event.user);
     emit(state.copyWith(
       user: newUser,
       isValid: Formz.validate([newUser, state.password]),
@@ -25,7 +25,7 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   }
 
   void _onPasswordChanged(PasswordChanged event, Emitter<LoginFormState> emit) {
-    final newPassword = PasswordInputValidationsModel.dirty(event.password);
+    final newPassword = PasswordInputModel.dirty(event.password);
     emit(state.copyWith(
       password: newPassword,
       isValid: Formz.validate([newPassword, state.user]),
@@ -46,8 +46,8 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
   }
 
   void _touchEveryField(Emitter<LoginFormState> emit) {
-    final user = InputValidationsModel.dirty(state.user.value);
-    final password = PasswordInputValidationsModel.dirty(state.password.value);
+    final user = InputModel.dirty(state.user.value);
+    final password = PasswordInputModel.dirty(state.password.value);
     final isValid = Formz.validate([user, password]);
     print(isValid);
 

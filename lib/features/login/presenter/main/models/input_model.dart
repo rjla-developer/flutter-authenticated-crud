@@ -4,12 +4,12 @@ import 'package:formz/formz.dart';
 enum InputError { empty }
 
 // Extend FormzInput and provide the input type and error type.
-class InputValidationsModel extends FormzInput<String, InputError> {
+class InputModel extends FormzInput<String, InputError> {
   // Call super.pure to represent an unmodified form input.
-  const InputValidationsModel.pure() : super.pure('');
+  const InputModel.pure() : super.pure('');
 
   // Call super.dirty to represent a modified form input.
-  const InputValidationsModel.dirty(super.value) : super.dirty();
+  const InputModel.dirty(super.value) : super.dirty();
 
   String? get errorMessage {
     if (isValid || isPure) return null;

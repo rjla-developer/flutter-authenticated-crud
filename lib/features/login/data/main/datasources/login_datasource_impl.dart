@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:teslo_shop/core/network/dio_client.dart';
 import 'package:teslo_shop/features/login/data/main/exceptions/login_exceptions.dart';
 import 'package:teslo_shop/features/login/data/main/mappers/user_account_mapper.dart';
@@ -21,8 +22,16 @@ class LoginDataSourceImpl extends LoginDataSource {
       final userAccount =
           UserAccountMapper.userAccountJsonToModel(response.data);
       return userAccount;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) throw WrongCredentialsException();
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw ConnectionTimeoutException();
+      }
+      throw CustomErrorException(
+          message: "Error al iniciar sesión", errorCode: 1);
     } catch (e) {
-      throw WrongCredentialsException();
+      throw CustomErrorException(
+          message: "Error al iniciar sesión", errorCode: 1);
     }
   }
 

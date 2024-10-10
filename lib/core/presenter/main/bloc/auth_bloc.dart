@@ -27,6 +27,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         authStatus: AuthStatus.unauthenticated,
         errorMessage: 'Usuario o contraseña incorrectos',
       ));
+    } on ConnectionTimeoutException {
+      emit(state.copyWith(
+        authStatus: AuthStatus.unauthenticated,
+        errorMessage: 'Error de conexión',
+      ));
     } catch (e) {
       emit(state.copyWith(
         authStatus: AuthStatus.unauthenticated,

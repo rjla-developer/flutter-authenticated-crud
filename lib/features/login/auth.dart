@@ -1,3 +1,3 @@
-export 'ui/screens/screens.dart';
+export 'ui/main/screens/screens.dart';
 
-export 'ui/widgets/widgets.dart';
+export 'ui/main/widgets/widgets.dart';

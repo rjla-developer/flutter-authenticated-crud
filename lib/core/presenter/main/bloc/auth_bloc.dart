@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:teslo_shop/core/services/key_value_storage_service.dart';
 import 'package:teslo_shop/features/login/data/main/exceptions/login_exceptions.dart';
 import 'package:teslo_shop/features/login/domain/main/models/user_account_model.dart';
 import 'package:teslo_shop/features/login/domain/main/repositories/login_repository.dart';
@@ -9,7 +10,10 @@ part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginRepository loginRepository;
-  AuthBloc({required this.loginRepository}) : super(AuthState()) {
+  final KeyValueStorageService keyValueStorageService;
+  AuthBloc(
+      {required this.loginRepository, required this.keyValueStorageService})
+      : super(AuthState()) {
     on<AuthLoginEvent>(_onLogin);
     on<LogoutEvent>(_onLogout);
     on<CheckAuthStatusEvent>(_onCheckAuthStatus);
@@ -18,6 +22,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   Future<void> _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
     try {
       final user = await loginRepository.login(event.email, event.password);
+      await keyValueStorageService.setKeyValue('token', user.token);
+
       emit(state.copyWith(
         userAccount: user,
         authStatus: AuthStatus.authenticated,
@@ -47,6 +53,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onLogout(LogoutEvent event, Emitter<AuthState> emit) async {
+    await keyValueStorageService.removeKey('token');
+
     emit(state.copyWith(
       userAccount: null,
       authStatus: AuthStatus.unauthenticated,

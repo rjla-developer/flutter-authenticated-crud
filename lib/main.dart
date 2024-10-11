@@ -4,6 +4,7 @@ import 'package:teslo_shop/config/config.dart';
 import 'package:teslo_shop/config/constants/environment.dart';
 import 'package:teslo_shop/config/router/app_router.dart';
 import 'package:teslo_shop/core/services/key_value_storage_service_impl.dart';
+/* import 'package:teslo_shop/core/services/shared_preferences_key_value_storage_service_impl.dart'; */
 import 'package:teslo_shop/features/login/data/main/repositories/login_repository_impl.dart';
 import 'package:teslo_shop/core/presenter/main/bloc/auth_bloc.dart';
 
@@ -24,6 +25,8 @@ class MainApp extends StatelessWidget {
           create: (context) => AuthBloc(
             loginRepository: LoginRepositoryImpl(),
             keyValueStorageService: KeyValueStorageServiceImpl(),
+            /* keyValueStorageService:
+                SharedPreferencesKeyValueStorageServiceImpl(), */
           ),
         ),
       ],

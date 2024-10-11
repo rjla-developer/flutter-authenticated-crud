@@ -17,6 +17,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLoginEvent>(_onLogin);
     on<LogoutEvent>(_onLogout);
     on<CheckAuthStatusEvent>(_onCheckAuthStatus);
+    // Emite el estado de autenticación al iniciar la aplicación
+    add(CheckAuthStatusEvent());
   }
 
   Future<void> _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
@@ -63,5 +65,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onCheckAuthStatus(
-      CheckAuthStatusEvent event, Emitter<AuthState> emit) async {}
+      CheckAuthStatusEvent event, Emitter<AuthState> emit) async {
+    final token = await keyValueStorageService.getValue<String>('token');
+    print('Token: $token');
+    if (token == null) {
+      return add(LogoutEvent(
+          errorMessage:
+              'Se ha cerrado la sesión por inactividad')); //No estoy muy seguro si aplique este mensaje
+    }
+    try {
+      final userAccount = await loginRepository.checkStatus(token);
+      emit(state.copyWith(
+        authStatus: AuthStatus.unauthenticated,
+        userAccount: userAccount,
+        errorMessage: '',
+      ));
+    } on InvalidTokenException {
+      add(LogoutEvent(errorMessage: 'Token inválido'));
+    } on ConnectionTimeoutException {
+      add(LogoutEvent(errorMessage: 'Error de conexión'));
+    } catch (e) {
+      add(LogoutEvent(errorMessage: 'Sesion expirada'));
+    }
+  }
 }

@@ -7,9 +7,32 @@ import 'package:teslo_shop/features/login/domain/main/models/user_account_model.
 
 class LoginDataSourceImpl extends LoginDataSource {
   @override
-  Future<UserAccountModel> checkStatus(String token) {
-    // TODO: implement checkStatus
-    throw UnimplementedError();
+  Future<UserAccountModel> checkStatus(String token) async {
+    try {
+      final response = await DioClient().dio.get(
+            "/auth/check-status",
+            options: Options(
+              headers: {
+                'Authorization': 'Bearer $token',
+              },
+            ),
+          );
+
+      final userAccount =
+          UserAccountMapper.userAccountJsonToModel(response.data);
+
+      return userAccount;
+    } on DioException catch (e) {
+      if (e.response?.statusCode == 401) throw InvalidTokenException();
+      if (e.type == DioExceptionType.connectionTimeout) {
+        throw ConnectionTimeoutException();
+      }
+      throw CustomErrorException(
+          message: "Error al verificar el estado de la sesión: $e",
+          errorCode: 1);
+    } catch (e) {
+      throw Exception("Error no controlado: $e");
+    }
   }
 
   @override

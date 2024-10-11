@@ -21,6 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(state.copyWith(
         userAccount: user,
         authStatus: AuthStatus.authenticated,
+        errorMessage: '',
       ));
     } on WrongCredentialsException {
       emit(state.copyWith(
@@ -28,6 +29,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         userAccount: null,
         errorMessage: 'Usuario o contraseña incorrectos',
       ));
+      //TODO: Si las credenciales son incorrectas, se debe mandar un mensaje dentro de los inputs.
+      //TODO: Implementar un contador de intentos fallidos
     } on ConnectionTimeoutException {
       emit(state.copyWith(
         authStatus: AuthStatus.unauthenticated,

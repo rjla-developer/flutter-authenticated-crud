@@ -9,10 +9,25 @@ import 'package:teslo_shop/features/products/products.dart';
 
 GoRouter createRouter(AuthBloc authBloc) {
   return GoRouter(
-    initialLocation: '/login',
+    initialLocation: '/loading',
     refreshListenable: AppRouterNotifier(authBloc),
     redirect: (context, state) {
-      print(state.fullPath);
+      final isGoingTo = state.fullPath;
+      final authStatus = authBloc.state.authStatus;
+
+      if (authStatus == AuthStatus.checking && isGoingTo == "/loading") {
+        return '/loading';
+      }
+      if (authStatus == AuthStatus.unauthenticated) {
+        if (isGoingTo == '/login' || isGoingTo == '/register') return null;
+        return '/login';
+      }
+      if (authStatus == AuthStatus.authenticated) {
+        if (isGoingTo == '/login' ||
+            isGoingTo == '/register' ||
+            isGoingTo == '/loading') return '/';
+      }
+
       return null;
     },
     routes: [

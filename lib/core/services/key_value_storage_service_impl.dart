@@ -8,7 +8,6 @@ class KeyValueStorageServiceImpl extends KeyValueStorageService {
   @override
   Future<T?> getValue<T>(String key) async {
     String? storedValue = await _secureStorage.read(key: key);
-    print('Stored value: $storedValue');
 
     switch (T) {
       case const (int):

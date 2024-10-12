@@ -6,10 +6,10 @@ class AppRouterNotifier extends ChangeNotifier {
   AuthStatus _authStatus = AuthStatus.checking;
 
   AppRouterNotifier(this.authBloc) {
+    // Esto escucha los cambios en el estado de autenticación del AuthBloC
     authBloc.stream.listen((authState) {
-      print(
-          'Escuchando cambio en App Router Notifier: ${authState.authStatus}');
       _authStatus = authState.authStatus;
+      notifyListeners();
     });
   }
 

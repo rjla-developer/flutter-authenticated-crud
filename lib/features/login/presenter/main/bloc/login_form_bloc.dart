@@ -39,21 +39,15 @@ class LoginFormBloc extends Bloc<LoginFormEvent, LoginFormState> {
     if (!state.isValid) return;
 
     await loginUserCallback(state.user.value, state.password.value);
-
-    /* emit(state.copyWith(isPosting: true));
-
-    emit(state.copyWith(isPosting: false)); */
   }
 
   void _touchEveryField(Emitter<LoginFormState> emit) {
     final user = InputModel.dirty(state.user.value);
     final password = PasswordInputModel.dirty(state.password.value);
     final isValid = Formz.validate([user, password]);
-    print(isValid);
 
     // Actualizar el estado con los nuevos valores y la validación
     emit(state.copyWith(
-      isFormPosted: true,
       user: user,
       password: password,
       isValid: isValid,

@@ -22,6 +22,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   Future<void> _onLogin(AuthLoginEvent event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(errorMessage: ""));
     try {
       final user = await loginRepository.login(event.email, event.password);
       await keyValueStorageService.setKeyValue('token', user.token);
@@ -76,7 +77,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       final userAccount = await loginRepository.checkStatus(token);
       emit(state.copyWith(
-        authStatus: AuthStatus.unauthenticated,
+        authStatus: AuthStatus.authenticated,
         userAccount: userAccount,
         errorMessage: '',
       ));

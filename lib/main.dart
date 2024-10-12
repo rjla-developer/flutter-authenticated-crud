@@ -30,10 +30,17 @@ class MainApp extends StatelessWidget {
           ),
         ),
       ],
-      child: MaterialApp.router(
-        routerConfig: appRouter,
-        theme: AppTheme().getTheme(),
-        debugShowCheckedModeBanner: false,
+      child: Builder(
+        builder: (context) {
+          final authBloc = BlocProvider.of<AuthBloc>(context);
+          final goRouter = createRouter(authBloc);
+
+          return MaterialApp.router(
+            routerConfig: goRouter,
+            theme: AppTheme().getTheme(),
+            debugShowCheckedModeBanner: false,
+          );
+        },
       ),
     );
   }
